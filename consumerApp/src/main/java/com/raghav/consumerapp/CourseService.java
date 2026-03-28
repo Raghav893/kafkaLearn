@@ -1,19 +1,20 @@
 package com.raghav.consumerapp;
 
 
+import lombok.Data;
+import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 @Service
+@Data
 public class CourseService {
 
-    private final KafkaTemplate<String,Course> kafkaTemplate;
+    private String message;
+    @KafkaListener(topics = "raghav",groupId = "consumerG")
+    public void consume(Course course){
+        message = course+"GOt it from kafka ";
+        System.out.println(message);
 
-    public CourseService(KafkaTemplate<String, Course> kafkaTemplate) {
-        this.kafkaTemplate = kafkaTemplate;
-    }
-    public String sendMessage(Course course){
-        kafkaTemplate.send("raghav","course",course);
-        return "Course message sent to kafka server";
-    }
+    return ;}
 }
